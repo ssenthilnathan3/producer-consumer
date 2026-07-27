@@ -20,9 +20,7 @@ void* consumer(void* arg) {
     RBuf* b = (RBuf*)arg;
     uint8_t val;
     while (1) {
-        rbuf_pop(b, &val);
-        if (b->done)
-            break;
+        if (!rbuf_pop(b, &val)) break;
         printf("Consumed: %u\n", (unsigned)val);
     }
     return NULL;

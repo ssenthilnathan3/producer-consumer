@@ -18,6 +18,6 @@ typedef struct RBuf {
 } RBuf;
 
 void rbuf_push(RBuf* b, uint8_t byte);
-void rbuf_pop(RBuf* b, uint8_t* out);
+int rbuf_pop(RBuf* b, uint8_t* out);
 void rbuf_destroy(RBuf* b);
 void rbuf_init(RBuf* b);
