@@ -41,7 +41,7 @@ void rbuf_push(RBuf *b, uint8_t byte) {
     pthread_mutex_unlock(&b->mutex);
 }
 
-void rbuf_pop(RBuf *b, uint8_t* out) {
+int rbuf_pop(RBuf *b, uint8_t* out) {
   pthread_mutex_lock(&b->mutex);
 
   while (b->size == 0 && !b->done)
@@ -49,7 +49,7 @@ void rbuf_pop(RBuf *b, uint8_t* out) {
 
   if (b->size == 0) {
     pthread_mutex_unlock(&b->mutex);
-    return;
+    return 0;
   }
 
   *out = *b->read_ptr;
@@ -63,6 +63,7 @@ void rbuf_pop(RBuf *b, uint8_t* out) {
   pthread_cond_signal(&b->producer);
 
   pthread_mutex_unlock(&b->mutex);
+  return 1;
 }
 
 void rbuf_destroy(RBuf* b){
